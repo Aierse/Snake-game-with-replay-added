@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+// 리플레이 데이터는 게임에 사용되었던 시드값과 뱀의 방향이 전환된 위치를 저장합니다
+// 리플레이 재생 시 현재 위치 - 다음 위치를 비교해 방향을 지정하여 이동합니다
+// 다음 위치 도달 시 방향 지정을 다시 수행하여 파일의 끝까지 반복합니다
+
 replaydata* createreplay(int x, int y) {
 	replaydata* temp = (replaydata*)malloc(sizeof(replaydata));
 	temp->location.x = x;
@@ -24,7 +28,7 @@ void append(player* p, replaydata* newnode) {
 	p->data->link = newnode;
 	p->data = newnode;
 }
-
+// 파일 이름 자동 생성
 char* getname() {
 	static char fname[100];
 
@@ -51,7 +55,7 @@ char* getname() {
 FILE* made_replay() {
 	return fopen(getname(), "wb");
 }
-
+// 데이터를 파일로 저장
 void savefile(player* p, int seed) {
 	FILE* fp = made_replay();
 
@@ -96,79 +100,3 @@ void savefile(player* p, int seed) {
 	printf("저장이 완료되었습니다.\n");
 	fclose(fp);
 }
-/*
-int replaylist() {
-	int count = 1;
-	char charcount[3];
-
-	while (1) { //replay(n).dat 생성
-		char buffer[100] = "replay(";
-		sprintf(charcount, "%d", count);
-		strcat(buffer, charcount);
-		strcat(buffer, ").dat");
-
-		if (fopen(buffer, "r") != NULL) {	//파일이 존재한다면
-			count++;
-		}
-		else {
-			break;
-		}
-	}
-
-	return count - 1;
-}
-
-FILE* getreplayfile() {
-	int replaycount = replaylist();
-	
-	if (replaycount == 0) {
-		printf("파일이 존재하지 않습니다.\n");
-		exit(1);
-	}
-
-	int select = 0;
-	int key;
-
-	do {
-		gotoxy(0, boardy + 2);
-		for (int i = 1; i <= replaycount; i++) {
-			if (select == i - 1)
-				printf("▶▶");
-
-			gotoxy(4, boardy + 1 + i);
-			printf("    replay(%d).dat\n", i);
-		}
-
-		key = getch();
-		if (key != 224)
-			continue;
-
-		key = getch();
-		switch (key) {
-		case direction_up:
-			gotoxy(0, boardy + 2 + select);
-			printf("    ");
-			select = (select + replaycount - 1 ) % replaycount;
-			break;
-		case direction_down:
-			gotoxy(0, boardy + 2 + select);
-			printf("    ");
-			select = (select + replaycount + 1) % replaycount;
-			break;
-		}
-	} while (key != 13); //엔터 입력시 종료
-
-	gotoxy(0, boardy + 2);
-	for (int i = 1; i <= replaycount; i++) {
-		printf("                                           \n");
-	}
-	
-	char buffer[100] = "replay(";
-	char charcount[3];
-	sprintf(charcount, "%d", select + 1);
-	strcat(buffer, charcount);
-	strcat(buffer, ").dat");
-
-	return fopen(buffer, "rb");
-}
-*/
