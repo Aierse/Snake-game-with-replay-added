@@ -1,5 +1,6 @@
 # Snake-game-with-replay-added
- 리플레이 기능이 추가된 콘솔기반 뱀게임
+ 리플레이 기능이 추가된 콘솔기반 뱀게임  
+ 자세한 설명은 뱀게임.ppt를 참조하세요.
  
 ### Public_data.c 와 Public_data.h
 프로그램 전역에서 공용으로 사용되는 모듈입니다.  
